@@ -25,7 +25,7 @@ def login_with_google():
     # Streamlit secrets에서 값 불러오기
     client_id = st.secrets["client_secrets"]["client_id"]
     client_secret = st.secrets["client_secrets"]["client_secret"]
-    redirect_uris = st.secrets["client_secrets"]["redirect_uris"]
+    
     flow = Flow.from_client_config(
         {
             "web": {
@@ -33,10 +33,11 @@ def login_with_google():
                 "client_secret": client_secret,
                 "auth_uri": "https://accounts.google.com/o/oauth2/auth",
                 "token_uri": "https://oauth2.googleapis.com/token",
-                "redirect_uris": [redirect_uris],
+                "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                "redirect_uris": ["https://tweak-web.streamlit.app"]
             }
         },
-        scopes=["https://www.googleapis.com/auth/userinfo.profile"],
+        scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
     )
 
     query_params = st.query_params
